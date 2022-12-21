@@ -15,6 +15,7 @@ type BookService interface {
 	FindByID(ID int) (Book, error)
 	Create(book AddBookRequest) (Book, error)
 	Update(ID int, book UpdateBookRequest) (Book, error)
+	Delete(ID int) (Book, error)
 }
 
 type service struct {
