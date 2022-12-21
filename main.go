@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"log"
-	"pustaka-api/book"
-	"pustaka-api/handler"
+	"pustaka-api/entity"
+	"pustaka-api/handlers"
+	"pustaka-api/repositories"
+	"pustaka-api/services"
 
 	"github.com/gin-gonic/gin"
 
@@ -21,68 +23,27 @@ func main() {
 	}
 	fmt.Println("DB Connected")
 
-	db.AutoMigrate(&book.Book{})
+	db.AutoMigrate(&entity.Book{})
 
-	// CRUD
+	bookRepository := repositories.NewRepository(db)
+	bookService := services.NewService(bookRepository)
+	bookHandler := handlers.NewBookHandler(bookService)
 
-	// book := book.Book{} // for single data
-	var books []book.Book
-	// CREATE
-	// book.Title = "Cara mencintaimu"
-	// book.Description = "Lorem ipsum Dollor Lorem ipsum Dollor Lorem ipsum Dollor"
-	// book.Price = 10302
-	// book.Discount = 20
-	// book.Rating = 2
-
-	// err = db.Create(&book).Error
-	// if err != nil {
-	// 	fmt.Println("====================")
-	// 	fmt.Println("Error Add Data Book")
-	// 	fmt.Println("====================")
-	// }
-
-	// GET  SINGLE DATA
-	// err = db.Debug().First(&book).Error
-	// if err != nil {
-	// 	fmt.Println("===== SINGLE DATA =====")
-	// 	fmt.Println("Error Finding Data Book")
-	// 	fmt.Println("====================")
-	// }
-
-	// fmt.Println("====================")
-	// fmt.Println("Title :", book.Title)
-	// fmt.Println("book Object %v", book)
-	// fmt.Println("====================")
-
-	// GET ALL DATA
-	err = db.Debug().Find(&books).Error
-	if err != nil {
-		fmt.Println("====================")
-		fmt.Println("Error Finding Data Book")
-		fmt.Println("====================")
-	}
-
-	fmt.Println("=====ALL DATA =====")
-	for _, book := range books {
-		fmt.Println("Title :", book.Title)
-		fmt.Println("book Object %v", book)
-		fmt.Println("====================")
-	}
-
+	
 	router := gin.Default()
 
 	v1 := router.Group("/v1")
 
 	// GET METHOD =======================
-	v1.GET("/", handler.WelcomeHandler)
-	v1.GET("/about", handler.AboutHandler)            // get data
-	v1.GET("/books/:id", handler.BooksHandler)        //get by single id
-	v1.GET("/books/:id/:name", handler.BooksHandler2) //get by multiple id
+	v1.GET("/", bookHandler.WelcomeHandler)
+	// v1.GET("/about", bookHandler.AboutHandler)            // get data
+	// v1.GET("/books/:id", bookHandler.BooksHandler)        //get by single id
+	// v1.GET("/books/:id/:name", bookHandler.BooksHandler2) //get by multiple id
 	// v1.GET("/query", queryHandler) // get by single query
-	v1.GET("/query", handler.QueryHandler2) // get by multiple query
+	// v1.GET("/query", bookHandler.QueryHandler2) // get by multiple query
 
-	// POST METHOD
-	v1.POST("/book", handler.AddNewBookHandler)
+	v1.POST("/book", bookHandler.AddNewBookHandler)
+	v1.GET("/books", bookHandler.GetAllBooksHandler)
 
 	router.Run(":7777")
 }

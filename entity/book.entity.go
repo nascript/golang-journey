@@ -1,14 +1,15 @@
-package book
+package entity
 
 import "time"
 
 type Book struct {
 	ID          int
 	Title       string
+	Subtitle    string
 	Description string
 	Price       int
 	Rating      int
 	Discount    int
 	CreatedAt   time.Time
-	updatedAt   time.Time
+	UpdatedAt   time.Time
 }
