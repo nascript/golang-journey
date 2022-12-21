@@ -5,13 +5,19 @@ import (
 	"net/http"
 	"pustaka-api/entity"
 	"pustaka-api/helpers"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
 
-func (h *bookHandler) AddNewBookHandler(ctx *gin.Context) {
-	var bookRequest entity.AddBookRequest
+func (h *bookHandler) UpdateBookHandler(ctx *gin.Context) {
+
+	// GET ID
+	idString := ctx.Param("id")
+	id, _ := strconv.Atoi(idString)
+
+	var bookRequest entity.UpdateBookRequest
 	err := ctx.ShouldBindJSON(&bookRequest)
 
 	if err != nil {
@@ -26,7 +32,8 @@ func (h *bookHandler) AddNewBookHandler(ctx *gin.Context) {
 		})
 		return
 	}
-	book, err := h.bookService.Create(bookRequest)
+
+	book, err := h.bookService.Update(id, bookRequest)
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{

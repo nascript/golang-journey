@@ -1,6 +1,6 @@
 package entity
 
-type BookRequest struct {
+type AddBookRequest struct {
 	Title       string `json:"title" binding:"required"`
 	Subtitle    string `json:"subtitle" binding:"required"`
 	Description string `json:"description" binding:"required"`

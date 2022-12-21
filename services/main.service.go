@@ -6,13 +6,15 @@ import (
 )
 
 type Book = entity.Book
-type BookRequest = entity.BookRequest
+type AddBookRequest = entity.AddBookRequest
+type UpdateBookRequest = entity.UpdateBookRequest
 type Repository = repositories.Repository
 
 type BookService interface {
 	FindAll() ([]Book, error)
 	FindByID(ID int) (Book, error)
-	Create(book BookRequest) (Book, error)
+	Create(book AddBookRequest) (Book, error)
+	Update(ID int, book UpdateBookRequest) (Book, error)
 }
 
 type service struct {

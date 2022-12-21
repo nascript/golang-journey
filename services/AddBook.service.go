@@ -1,6 +1,6 @@
 package services
 
-func (s *service) Create(bookRequest BookRequest) (Book, error) {
+func (s *service) Create(bookRequest AddBookRequest) (Book, error) {
 
 	book := Book{
 		Title:       bookRequest.Title,
