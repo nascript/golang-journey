@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"pustaka-api/entity"
+	"pustaka-api/helpers"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -35,19 +36,13 @@ func (h *bookHandler) AddNewBookHandler(ctx *gin.Context) {
 
 	var booksResponse []entity.BookResponse
 
-	bookResponse := entity.BookResponse{
-		ID:          book.ID,
-		Title:       book.Title,
-		Subtitle:    book.Subtitle,
-		Description: book.Description,
-		Price:       book.Price,
-		Rating:      book.Rating,
-		Discount:    book.Discount,
-	}
+	bookResponse := helpers.ConvertToBookResponse(book)
 
 	booksResponse = append(booksResponse, bookResponse)
 
 	ctx.JSON(http.StatusOK, gin.H{
-		"data": bookResponse,
+		"status": http.StatusOK,
+		"error":  false,
+		"data":   bookResponse,
 	})
 }

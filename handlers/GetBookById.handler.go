@@ -3,28 +3,29 @@ package handlers
 import (
 	"net/http"
 	"pustaka-api/entity"
-	"pustaka-api/helpers"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"pustaka-api/helpers"
 )
 
-func (h *bookHandler) GetAllBooksHandler(ctx *gin.Context) {
-	books, err := h.bookService.FindAll()
+func (h *bookHandler) GetBookByIdHandler(ctx *gin.Context) {
+	idString := ctx.Param("id")
+	id, _ := strconv.Atoi(idString)
+
+	book, err := h.bookService.FindByID(id)
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"errors": err,
 		})
-		return
 	}
 
 	var booksResponse []entity.BookResponse
 
-	for _, book := range books {
-		bookResponse := helpers.ConvertToBookResponse(book)
+	bookResponse := helpers.ConvertToBookResponse(book)
 
-		booksResponse = append(booksResponse, bookResponse)
-	}
+	booksResponse = append(booksResponse, bookResponse)
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"status": http.StatusOK,
