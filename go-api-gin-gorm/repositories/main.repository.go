@@ -13,6 +13,7 @@ type Repository interface {
 	FindByID(ID int) (Book, error)
 	Create(book Book) (Book, error)
 	Update(book Book) (Book, error)
+	Delete(book Book) (Book, error)
 }
 
 type repository struct {

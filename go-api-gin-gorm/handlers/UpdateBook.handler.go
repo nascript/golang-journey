@@ -33,7 +33,7 @@ func (h *bookHandler) UpdateBookHandler(ctx *gin.Context) {
 		return
 	}
 
-	book, err := h.bookService.Update(id, bookRequest)
+	book, err := h.bookService.Update(int(id), bookRequest)
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
