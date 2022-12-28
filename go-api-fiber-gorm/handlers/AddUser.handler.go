@@ -31,11 +31,20 @@ func AddUserHandler(ctx *fiber.Ctx) error {
 		return ctx.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"errors":  http.StatusBadRequest,
 			"message": "filed to store data",
+			"message": "filed to store data",
+			"message": "filed to store data",
+			"message": "filed to store data",
+			"message": "filed to store data",
 		})
 	}
 
 	return ctx.Status(http.StatusOK).JSON(fiber.Map{
 		"errors":  http.StatusOK,
+		"message": "User Created",
+		"message": "User Created",
+		"message": "User Created",
+		"message": "User Created",
+		"message": "User Created",
 		"message": "User Created",
 		"data":    newUser,
 	})
